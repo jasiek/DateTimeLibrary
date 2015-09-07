@@ -230,7 +230,7 @@ uint32_t DateTime::getTime()
     return _seconds;
 }
 
-#elif defined(__LM4F120H5QR__) || defined(__TM4C123GH6PM__) || defined(__TM4C129XNCZAD__)
+#elif defined(__LM4F120H5QR__) || defined(__TM4C123GH6PM__) || defined(__TM4C129XNCZAD__) || defined(__TM4C1294NCPDT__)
 
 void DateTime::begin()
 {
@@ -246,7 +246,7 @@ void DateTime::setTime(uint32_t timeEpoch)
 void DateTime::setTime(tm timeStructure)
 {
     convertStructure2Epoch(timeStructure, _epochRTC);
-    PRCMRTCSet(_epochRTC, 0);
+    ROM_HibernateRTCSet(_epochRTC);
 }
 
 uint32_t DateTime::getTime()
