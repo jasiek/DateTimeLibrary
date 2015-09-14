@@ -43,7 +43,9 @@
 /// @brief      Scope for NTP
 /// @details    1 to include NTP utility, 0 otherwise
 ///
+#ifndef INCLUDE_NTP
 #define INCLUDE_NTP 0
+#endif
 
 ///
 /// @brief      Predefined time zones
@@ -282,7 +284,14 @@ String stringFormatDateTime(const char * format, time_t timeEpoch);
 
 
 #if (INCLUDE_NTP == 1)
+
+#if defined(__CC3200R1M1RGC__)
 #include "WiFi.h"
+#endif
+
+#if defined(__TM4C1294NCPDT__)
+#include <EthernetUdp.h>
+#endif
 
 ///
 /// @brief      Get date and time from NTP server

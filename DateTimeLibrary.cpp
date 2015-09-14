@@ -260,14 +260,24 @@ uint32_t DateTime::getTime()
 
 #if (INCLUDE_NTP == 1)
 
+#if defined(__CC3200R1M1RGC__)
+#define NETWORK_DEVICE WiFi
+#define NETWORK_CLASS WiFiUDP
+#endif
+
+#if defined(__TM4C1294NCPDT__)
+#define NETWORK_DEVICE Ethernet
+#define NETWORK_CLASS EthernetUdp
+#endif
+
 bool getTimeNTP(time_t &epochNTP, IPAddress serverNTP)
 {
     bool result = false;
-    
-    // Check WiFi connection
-    if (WiFi.localIP() == INADDR_NONE)
+
+    // Check connection
+    if (NETWORK_DEVICE.localIP() == INADDR_NONE)
     {
-        if (Serial) Serial.println("ERROR No WiFi");
+        if (Serial) Serial.println("ERROR No network");
         return false;
     }
     
@@ -276,7 +286,7 @@ bool getTimeNTP(time_t &epochNTP, IPAddress serverNTP)
     uint8_t bufferNTP[NTP_PACKET_SIZE]; //buffer to hold incoming and outgoing packets
     
     // A UDP instance to let us send and receive packets over UDP
-    WiFiUDP myUDPforNTP;
+    NETWORK_CLASS myUDPforNTP;
     
     myUDPforNTP.begin(2390);
     
