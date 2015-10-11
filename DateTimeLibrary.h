@@ -64,7 +64,7 @@
 #define tz_PDT -7*60*60    ///< Pacific Daylight Time
 
 #define tz_CST -6*60*60    ///< Central Standard Time
-#define tz_PDT -5*60*60    ///< Central Daylight Time
+#define tz_CDT -5*60*60    ///< Central Daylight Time
 /// @}
 
 ///
