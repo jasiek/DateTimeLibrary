@@ -270,7 +270,7 @@ uint32_t DateTime::getTime()
 #define NETWORK_CLASS EthernetUDP
 #endif
 
-bool getTimeNTP(time_t &epochNTP, IPAddress serverNTP)
+bool getTimeNTP(time_t &epochNTP, char *serverNTP)
 {
     bool result = false;
     int ret;

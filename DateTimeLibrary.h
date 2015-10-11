@@ -300,7 +300,7 @@ String stringFormatDateTime(const char * format, time_t timeEpoch);
 ///
 /// @brief      Get date and time from NTP server
 /// @param      epochNTP time in epoch format
-/// @param      serverNTP IP address of the NTP server, default =
+/// @param      serverNTP host name or (string) ip address of the NTP server
 /// @return     true is successful, false otherwise
 /// @note       epochNTP is updated only if successful.
 /// @warning    A valid connection to Internet is required.
@@ -318,7 +318,7 @@ String stringFormatDateTime(const char * format, time_t timeEpoch);
 /// @see 	NTP time servers and messages
 /// @n		http://en.wikipedia.org/wiki/Network_Time_Protocol
 ///
-bool getTimeNTP(time_t &epochNTP, IPAddress serverNTP = IPAddress(145,238,203,14));
+bool getTimeNTP(time_t &epochNTP, char *serverNTP);
 
 #endif // NTP
 #endif // header
