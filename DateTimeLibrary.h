@@ -43,8 +43,11 @@
 /// @brief      Scope for NTP
 /// @details    1 to include NTP utility, 0 otherwise
 ///
+/* there is no easy way to define this when DateTimeLibrary.cpp is compiled
+ * so just set it to 1
+ */
 #ifndef INCLUDE_NTP
-#define INCLUDE_NTP 0
+#define INCLUDE_NTP 1
 #endif
 
 ///
@@ -290,6 +293,7 @@ String stringFormatDateTime(const char * format, time_t timeEpoch);
 #endif
 
 #if defined(__TM4C1294NCPDT__)
+#include <Ethernet.h>
 #include <EthernetUdp.h>
 #endif
 

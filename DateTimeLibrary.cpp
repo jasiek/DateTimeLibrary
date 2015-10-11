@@ -267,12 +267,13 @@ uint32_t DateTime::getTime()
 
 #if defined(__TM4C1294NCPDT__)
 #define NETWORK_DEVICE Ethernet
-#define NETWORK_CLASS EthernetUdp
+#define NETWORK_CLASS EthernetUDP
 #endif
 
 bool getTimeNTP(time_t &epochNTP, IPAddress serverNTP)
 {
     bool result = false;
+    int ret;
 
     // Check connection
     if (NETWORK_DEVICE.localIP() == INADDR_NONE)
@@ -288,7 +289,7 @@ bool getTimeNTP(time_t &epochNTP, IPAddress serverNTP)
     // A UDP instance to let us send and receive packets over UDP
     NETWORK_CLASS myUDPforNTP;
     
-    myUDPforNTP.begin(2390);
+    ret = myUDPforNTP.begin(localPort);
     
     // Send NTP packet to a time server
     memset(bufferNTP, 0, NTP_PACKET_SIZE);
@@ -306,14 +307,17 @@ bool getTimeNTP(time_t &epochNTP, IPAddress serverNTP)
     
     // all NTP fields have been given values, now
     // you can send a packet requesting a timestamp:
-    myUDPforNTP.beginPacket(serverNTP, 123); // NTP requests are to port 123
-    myUDPforNTP.write(bufferNTP, NTP_PACKET_SIZE);
-    myUDPforNTP.endPacket();
+    ret = myUDPforNTP.beginPacket(serverNTP, 123); // NTP requests are to port 123
+    ret = myUDPforNTP.write(bufferNTP, NTP_PACKET_SIZE);
+    ret = myUDPforNTP.endPacket();
     
     delay(1000);
+
+    ret = myUDPforNTP.parsePacket();
     
-    if (myUDPforNTP.parsePacket())
+    if (ret)
     {
+
         // Packet received, to be read
         myUDPforNTP.read(bufferNTP, NTP_PACKET_SIZE);
         
@@ -329,7 +333,7 @@ bool getTimeNTP(time_t &epochNTP, IPAddress serverNTP)
         // Rebase to 00:00 Jan 1, 1970
         // epoch = number of seconds since 00:00, Jan 1st, 1970 UTC = POSIX time.
         // see http://www.epochconverter.com
-        epochNTP -= (uint32_t)2208988800;
+        epochNTP -= (uint32_t)2208988800u;
         result = true;
     }
     
